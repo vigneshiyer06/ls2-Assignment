@@ -24,20 +24,20 @@ def get_command_line_argument
     a_records=a_records.map{|line| line.split(", ")}
     dns_records={}
     a_records.each do |new_record|
-        abt_domain={:category => new_record[0], :name_2 => new_record[2]}
+        abt_domain={:category => new_record[0], :alias => new_record[2]}
         dns_records[new_record[1]]=(abt_domain)
     end
     dns_records
 end
 
 def resolve(dns_records,lookup_chain,domain)
-    if (dns_records[lookup_chain.last()]!=nil)
+    if (dns_records[domain])
         
         if(dns_records[lookup_chain.last()][:category]=="A")
-            lookup_chain.push(dns_records[lookup_chain.last()][:name_2])
+            lookup_chain.push(dns_records[lookup_chain.last()][:alias])
             return lookup_chain        
         else
-            lookup_chain.push(dns_records[lookup_chain.last()][:name_2])
+            lookup_chain.push(dns_records[lookup_chain.last()][:alias])
             resolve(dns_records,lookup_chain,domain)
         end
     else
